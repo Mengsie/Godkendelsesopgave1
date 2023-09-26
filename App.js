@@ -11,7 +11,7 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Profile from './components/Profile';
 
-//databse ting
+//database ting
 
 import { getApps, initializeApp } from "firebase/app"; 
 import { initializeAuth, getAuth } from 'firebase/auth';
@@ -39,13 +39,9 @@ export default function App() {
   //alert at databsen virker
   if (getApps().length < 1) {
     
-    console.log("Firebase On!");
-    // Initialize other firebase products here
+    console.log("Firebase virker");
      }
-
-     const auth = initializeAuth(app, {
-      persistence: getReactNativePersistence(AsyncStorage),
-    });
+     const auth = initializeAuth(app, { persistence: getReactNativePersistence(AsyncStorage),});
   
     //navigator mellem views
    return (
