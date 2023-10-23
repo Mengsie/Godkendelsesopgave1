@@ -1,40 +1,44 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native'; // Replaced TouchableOpacity with Button
+import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native'; 
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { Picker } from '@react-native-picker/picker'; // til bar at vælge user typen
 import { getDatabase, ref, set } from 'firebase/database';
+import { useNavigation } from '@react-navigation/native'; 
+import { globalStyles } from '../styles/globalStyles'
 
 const SignUp = () => {
 
-  //sætter variable 
+  //sætter variable og states som ændres når brugeren tilføjer information 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('lookingForRoom');
+  const navigation = useNavigation();
 
-  //til at signe up vha. firebase
+  //til at signe up vha. firebase og dens sikkerheds modul
         const handleSignup = () => {
         const auth = getAuth();
 
-
+          //laver en bruger med firebase moduler med email og pasword
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
           const user = userCredential.user;
 
-
+        //object der indeholder indtastet bruger information
         const userData = {
             password: password,
             email: email,
             userType: userType,
         };
 
-        //tilfææjer brugeren til datavse
+        //tilføjer brugeren til database i users, hvor de identificere med et userid (uid)
         const db = getDatabase();
         set(ref(db, 'users/' + user.uid), userData)
-
+              //hvis de lykkedes navigeres til profil view
               .then(() => {
                   console.log('Bruger tilføjet til databse');
+                  navigation.navigate('Profile');
           })
-
+          //hvis burger oprettelse fejler
           .catch((error) => {
             console.error('virker ikke:', error);
           });
@@ -46,38 +50,39 @@ const SignUp = () => {
   };
 
   return (
-    <View style={styles.container}>
-          <View style={styles.form}>
-        <Text style={styles.tekst}>Email</Text>
+    //views til at indtaste bruger information
+    <View style={globalStyles.container}>
+          <View style={globalStyles.form}>
+        <Text style={globalStyles.text}>Email</Text>
         <TextInput
-          style={styles.input}
+          style={globalStyles.input}
           placeholder="Enter your email"
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
 
-        <Text style={styles.tekst}>Password</Text>
+        <Text style={globalStyles.text}>Password</Text>
            <TextInput
-          style={styles.input}
+          style={globalStyles.input}
           placeholder="Enter your password"
           secureTextEntry
           value={password}
              onChangeText={(text) => setPassword(text)}
         />
 
-        <Text style={styles.tekst}>User Type</Text>
+        <Text style={globalStyles.text}>User Type</Text>
           <Picker
           selectedValue={userType}
           onValueChange={(itemValue) => setUserType(itemValue)}
-          style={styles.vælg}
         >
+
           <Picker.Item label="Looking" value="LookingForARoom" />
           <Picker.Item label="Renting" value="RentingOutARoom" />
              </Picker>
       </View>
-
-      <View style={styles.button}>
+      <View style={globalStyles.button}>
         <Button
+        //refere til funktion i straten som sikre brugeren kan lave en bruger
           onPress={handleSignup}
           title="Sign Up"
         />
@@ -85,39 +90,5 @@ const SignUp = () => {
     </View>
     );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgb(50, 180, 250)',
-  },
-  form: {
-    width: '85%',
-  },
-  tekst: {
-    fontSize: 23,
-    marginBottom: 3,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 4,
-    padding: 13,
-    marginBottom: 11,
-    fontSize: 20,
-    height: 51,
-  },
-  vælg: {
-    width: '100%',
-    height: 55,
-    marginBottom: 22,
-  },
-  button: {
-    width: '80%',
-    marginTop: 102
-  },
-});
 
 export default SignUp;

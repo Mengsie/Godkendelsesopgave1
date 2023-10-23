@@ -1,21 +1,14 @@
 import { View, Text, Button, StyleSheet } from 'react-native';
 import * as React from "react";
+import { globalStyles } from '../styles/globalStyles'
 
-// Navigator to the three views
+// Navigator til de to views i starten
 const LandingPage = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome!</Text>
-
-      <View style={styles.buttonStyle}>
-        <Button
-          title="Profile"
-          onPress={() => navigation.navigate('Profile')}
-          color="white"
-        />
-      </View>
-
-      <View style={styles.buttonStyle}>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Welcome!</Text>
+      
+      <View style={globalStyles.buttonStyle}>
         <Button
           title="Login"
           onPress={() => navigation.navigate('Login')}
@@ -23,7 +16,7 @@ const LandingPage = ({ navigation }) => {
         />
       </View>
 
-      <View style={styles.buttonStyle}>
+      <View style={globalStyles.buttonStyle}>
         <Button
           title="Sign Up"
           onPress={() => navigation.navigate('Signup')}
@@ -34,27 +27,6 @@ const LandingPage = ({ navigation }) => {
      );
   };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgb(50, 180, 250)',
-    width: '100%'
-  },
-  title: {
-    fontSize: 27,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  buttonStyle: {
-    backgroundColor: 'rgb(0, 122, 255)',
-    borderRadius: 52,
-    padding: 12,
-    alignItems: 'center',
-    marginVertical: 11,
-    width: 200,
-  },
-  });
+
 
 export default LandingPage;
