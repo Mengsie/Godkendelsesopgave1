@@ -20,7 +20,7 @@ const Match = () => {
   //billede hentes fra firebase
   useEffect(() => {
     const storage = getStorage();
-    const imageRef = ref(storage, 'gs://roomie-6085a.appspot.com/profileImages/Q9SiIHw6ybfSCG5b06zQWhZgBU22.jpg'); 
+    const imageRef = ref(storage, 'gs://roomie-6085a.appspot.com/profileImages/ffMyAmnIFeekrHv0OpiA9RAgNql1.jpg'); 
 
     getDownloadURL(imageRef)
       .then((url) => {
